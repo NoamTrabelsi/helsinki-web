@@ -1,7 +1,7 @@
 "use server";
-import * as dbresearchs from "@/lib/db/researchs";
-import * as dbcontacts_hl from "@/lib/db/contacts_hl";
-import * as dbcontacts from "@/lib/db/contacts";
+import * as dbresearchs from "@/lib/db/mailToSend/researchs";
+import * as dbcontacts_hl from "@/lib/db/mailToSend/contacts_hl";
+import * as dbcontacts from "@/lib/db/mailToSend/contacts";
 
 import { catchHandler } from "@/utils/catch-handlers";
 

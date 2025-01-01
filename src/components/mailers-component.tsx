@@ -10,7 +10,7 @@ import {
   X,
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { updateMailer } from "@/actions/db//mailer";
+import { updateMailer } from "@/actions/db/mailer/mailer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -198,9 +198,9 @@ const MailersComponent = ({ mailers }: { mailers: Mailer[] }) => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <p>...</p>
+              <pre>...</pre>
             </TooltipTrigger>
-            <TooltipContent>{text}</TooltipContent>
+            <TooltipContent className="max-w-[200px] break-words">{text}</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </div>

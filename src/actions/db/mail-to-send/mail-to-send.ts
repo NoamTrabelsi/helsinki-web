@@ -1,5 +1,5 @@
 "use server";
-import * as db from "@/lib/db/mail-to-send";
+import * as db from "@/lib/db/mailToSend/mail-to-send";
 import { catchHandler } from "@/utils/catch-handlers";
 
 export const getMailToSend = async ({lastId,take}: { lastId?: number; take?: number }) => {

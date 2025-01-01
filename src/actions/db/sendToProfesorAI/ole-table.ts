@@ -1,5 +1,5 @@
 "use server";
-import * as db from "@/lib/db/helsinki-ole-table";
+import * as db from "@/lib/db/sendToProfesorAI/ole-table";
 import { catchHandler } from "@/utils/catch-handlers";
 
 

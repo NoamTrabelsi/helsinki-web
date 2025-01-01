@@ -2,16 +2,16 @@
 
 import { catchHandler } from "@/utils/catch-handlers";
 import { NextResponse } from "next/server";
-import { getResearchr } from "@/actions/db/researchs";
+import { getResearchr } from "@/actions/db/mail-to-send/researchs";
 import {
   deleteMailToSend,
   getMailToSend,
   updateMailToSend,
-} from "@/actions/db/mail-to-send";
-import { addMailer } from "@/actions/db/mailer";
-import { getAuthorizations } from "@/actions/db/authorizations";
-import { getGlobalParamenters } from "@/actions/db/global-paramenters";
-import { addMailToSendArchive } from "@/actions/db/mail-to-send-archive";
+} from "@/actions/db/mail-to-send/mail-to-send";
+import { addMailer } from "@/actions/db/mailer/mailer";
+import { getAuthorizations } from "@/actions/db/mail-to-send/authorizations";
+import { getGlobalParamenters } from "@/actions/db/mail-to-send/global-paramenters";
+import { addMailToSendArchive } from "@/actions/db/mail-to-send/mail-to-send-archive";
 
 export async function POST() {
   const appType = "matarotHelsinki";

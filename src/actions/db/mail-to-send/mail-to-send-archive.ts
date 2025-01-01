@@ -1,5 +1,5 @@
 "use server";
-import * as db from "@/lib/db/mail-to-send-archive";
+import * as db from "@/lib/db/mailToSend/mail-to-send-archive";
 import { catchHandler } from "@/utils/catch-handlers";
 
 export const addMailToSendArchive = async ({

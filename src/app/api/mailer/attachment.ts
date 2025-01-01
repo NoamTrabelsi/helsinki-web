@@ -1,4 +1,4 @@
-import { getOleTable } from "@/actions/db/helsinki-ole-table";
+import { getOleTable } from "@/actions/db/mail-to-send/helsinki-ole-table";
 import { catchHandler } from "@/utils/catch-handlers";
 
 type Attachment = {

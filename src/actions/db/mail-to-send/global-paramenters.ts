@@ -1,5 +1,5 @@
 "use server";
-import * as db from "@/lib/db/global-paramenters";
+import * as db from "@/lib/db/mailToSend/global-paramenters";
 import { catchHandler } from "@/utils/catch-handlers";
 
 export const getGlobalParamenters = async ({

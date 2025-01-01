@@ -1,7 +1,7 @@
 "use server";
 import MailersComponent from "@/components/mailers-component";
 import { catchHandler } from "@/utils/catch-handlers";
-import { getMailers } from "@/actions/db/mailer"; 
+import { getMailers } from "@/actions/db/mailer/mailer"; 
 import { Mailer } from "@prisma/client"; 
 
 const mailersPage = async ({

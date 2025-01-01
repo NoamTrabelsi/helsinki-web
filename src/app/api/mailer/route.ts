@@ -1,5 +1,5 @@
 "use server";
-import { getMailers, updateMailer } from "@/actions/db/mailer";
+import { getMailers, updateMailer } from "@/actions/db/mailer/mailer";
 import { catchHandler } from "@/utils/catch-handlers";
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";

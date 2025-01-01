@@ -1,6 +1,6 @@
 "use server";
-import * as dbauthorizations from "@/lib/db/authorizations";
-import * as dbcontacts from "@/lib/db/contacts";
+import * as dbauthorizations from "@/lib/db/mailToSend/authorizations";
+import * as dbcontacts from "@/lib/db/mailToSend/contacts";
 
 import { catchHandler } from "@/utils/catch-handlers";
 
