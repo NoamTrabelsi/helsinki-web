@@ -2,6 +2,14 @@
 import * as db from "@/lib/db/mailer/mailer";
 import { catchHandler } from "@/utils/catch-handlers";
 
+export const getMailer = async ({ status }: { status?: number }) => {
+  try {
+    return await db.getMailer({ status });
+  } catch (error: unknown) {
+    return catchHandler(error, "action", "get mailer");
+  }
+};
+
 export const getMailers = async ({
   lastId,
   status,

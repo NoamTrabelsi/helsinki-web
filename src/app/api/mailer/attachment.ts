@@ -16,9 +16,14 @@ export async function getAttachments(
     const att = attachments.split(",").map((ole: string) => Number(ole.trim()));
     validAttachments = await Promise.all(
       att.map(async (attachment: number) => {
-        const oleTable = (await getOleTable({ id: attachment })) as {
-          data: { f_name: string; DataFile: Buffer | null } | null;
-        };
+        let oleTable 
+        try {
+          oleTable= (await getOleTable({ id: attachment })) as {
+            data: { f_name: string; DataFile: Buffer | null } | null;
+          };
+        } catch (error) {
+          catchHandler(error, "attachment folder", "get ole table");
+        }
         const filename = oleTable?.data?.f_name;
 
         if (filename !== undefined) {

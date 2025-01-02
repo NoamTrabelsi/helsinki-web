@@ -1,5 +1,5 @@
 "use server";
-import * as db from "@/lib/db/sendToProfesorAI/general-hl-table";
+import * as db from "@/lib/db/sendToProfessorAI/general-hl-table";
 import { catchHandler } from "@/utils/catch-handlers";
 
 export const getGeneralHlTable = async ({

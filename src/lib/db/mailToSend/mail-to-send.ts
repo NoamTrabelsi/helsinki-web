@@ -12,7 +12,7 @@ export const getMailToSend = async ({
   take?: number;
 }) => {
   try {
-    const mailToSend = await helsinkidb.mail_to_send.findMany({
+    const mailToSend = await helsinkidb.mail_to_send.findFirst({
       where: {
         mail_date: {
           lte: new Date(),

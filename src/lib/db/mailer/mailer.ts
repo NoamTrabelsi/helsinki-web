@@ -3,6 +3,30 @@ import { catchHandler } from "@/utils/catch-handlers";
 import { PrismaClient } from "@prisma/client";
 const helsinkidb = new PrismaClient();
 
+// get mailer
+export const getMailer = async ({ status }: { status?: number }) => {
+  try {
+    const mailer = await helsinkidb.mailer.findFirst({
+      where: {
+        AND: [
+          { status },
+          {
+            sendDate: {
+              lte: new Date(),
+            },
+          },
+        ],
+      },
+      orderBy: {
+        id: "asc",
+      },
+    });
+    return { data: mailer };
+  } catch (error) {
+    return catchHandler(error, "DB", "get mailer");
+  }
+};
+
 // get mailers
 export const getMailers = async ({
   lastId,

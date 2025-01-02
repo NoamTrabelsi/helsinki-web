@@ -12,8 +12,8 @@ export const getSendProfessorAI = async ({
   take?: number;
 }) => {
   try {
-    const mailer = await helsinkidb.send_to_professor_AI.findFirst({
-      where: { send_date: null },
+    const professorAI = await helsinkidb.send_to_professor_AI.findFirst({
+      where: { status: null },
       take: take || 100,
       skip: lastId ? 1 : 0, // Skip the last record
       cursor: lastId ? { id: lastId } : undefined, // Start after the last fetched record
@@ -21,9 +21,9 @@ export const getSendProfessorAI = async ({
         id: "desc",
       },
     });
-    return { data: mailer };
+    return { data: professorAI };
   } catch (error) {
-    return catchHandler(error, "DB", "get Send To Prof");
+    return catchHandler(error, "DB", "get Send To professorAI");
   }
 };
 
@@ -32,22 +32,31 @@ export const updateSendToProfessorAI = async (
   id: number,
   {
     analysis,
+    status,
+    errCode,
+    errMsg,
   }: {
     analysis?: string;
+    status?: number;
+    errCode?: number;
+    errMsg?: string;
   }
 ) => {
   try {
-    const mailer = await helsinkidb.send_to_professor_AI.update({
+    const professorAI = await helsinkidb.send_to_professor_AI.update({
       where: { id: id },
       data: {
         send_date: new Date(),
         analysis,
+        status,
+        errCode,
+        errMsg,
       },
     });
     return {
-      data: mailer,
+      data: professorAI,
     };
   } catch (err: unknown) {
-    return catchHandler(err, "DB", "update Send To Prof");
+    return catchHandler(err, "DB", "update Send To professorAI");
   }
 };

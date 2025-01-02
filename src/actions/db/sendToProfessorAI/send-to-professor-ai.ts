@@ -1,5 +1,5 @@
 "use server";
-import * as db from "@/lib/db/sendToProfesorAI/send-to-profesor-ai";
+import * as db from "@/lib/db/sendToProfessorAI/send-to-professor-ai";
 import { catchHandler } from "@/utils/catch-handlers";
 
 export const getSendProfessorAI = async ({
@@ -15,7 +15,7 @@ export const getSendProfessorAI = async ({
       take,
     });
   } catch (error: unknown) {
-    return catchHandler(error, "action", "get Send To Prof");
+    return catchHandler(error, "action", "get Send To professorAI");
   }
 };
 
@@ -23,15 +23,24 @@ export const updateSendToProfessorAI = async (
   id: number,
   {
     analysis,
+    status,
+    errCode,
+    errMsg,
   }: {
     analysis?: string;
+    status?: number;
+    errCode?: number;
+    errMsg?: string;
   }
 ) => {
   try {
     return await db.updateSendToProfessorAI(id, {
       analysis,
+      status,
+      errCode,
+      errMsg,
     });
   } catch (error: unknown) {
-    return catchHandler(error, "action", "update Send To Prof");
+    return catchHandler(error, "action", "update Send To professorAI");
   }
 };
