@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbopack -p 3001",
     "build": "prisma generate && next build",
     "start": "next start",
+    "start-and-curl": "next start & sleep 5 && curl -X POST http://localhost:3000/api/your-endpoint \"Content-Type: application/json\" -d'{}'",
+    "dev-and-curl": "next dev --turbopack & sleep 5 && curl -X POST http://localhost:3001/api/webhook \"Content-Type: application/json\" -d'{}'",
     "lint": "next lint"
   },
   "dependencies": {
