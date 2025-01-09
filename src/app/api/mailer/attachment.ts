@@ -19,7 +19,7 @@ export async function getAttachments(
         let oleTable 
         try {
           oleTable= (await getOleTable({ id: attachment })) as {
-            data: { f_name: string; DataFile: Buffer | null } | null;
+            data: { f_name: string; DataFile: Buffer  } ;
           };
         } catch (error) {
           catchHandler(error, "attachment folder", "get ole table");

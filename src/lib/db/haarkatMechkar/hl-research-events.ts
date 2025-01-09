@@ -3,51 +3,40 @@ import { catchHandler } from "@/utils/catch-handlers";
 import { PrismaClient } from "@prisma/client";
 const helsinkidb = new PrismaClient();
 
-//add mail from mail to send to archive
+//get Hl Research Events
+export const getHlResearchEvents = async ({
+  research_id,
+  todayMin91,
+}: {
+  research_id?: number;
+  todayMin91: Date;
+}) => {
+  try {
+    return await helsinkidb.hl_research_events.findFirst({
+      where: {
+        research_id,
+        report_date: {
+          gte: todayMin91,
+          lte: new Date(),
+        },
+      },
+    });
+  } catch (error) {
+    return catchHandler(error, "DB", "get hl research events");
+  }
+};
+
+//add Hl Research Events
 export const addHlResearchEvents = async ({
   research_id,
   content,
   writer_id,
-  event_date,
-  writing_date,
-  event_type_id,
   report_date,
-  care_name_hl_id,
-  care_type_id,
-  close_date,
-  event_status,
-  version_list_id,
-  remarks,
-  before_confirm,
-  is_ready,
-  event_group_id,
-  version_id,
-  paid_up,
-  chairman_decision,
-  amount,
-  message_id,
 }: {
   research_id?: number;
   content?: string;
   writer_id?: number;
-  event_date?: Date;
-  writing_date?: Date;
-  event_type_id?: number;
   report_date?: Date;
-  care_name_hl_id?: number;
-  care_type_id?: number;
-  close_date?: Date;
-  event_status?: number;
-  version_list_id?: number;
-  remarks?: string;
-  before_confirm?: number;
-  is_ready?: number;
-  event_group_id?: number;
-  version_id?: number;
-  paid_up?: number;
-  chairman_decision?: string;
-  amount?: number;
-  message_id?: string;
 }) => {
   try {
     return await helsinkidb.hl_research_events.create({
@@ -55,24 +44,14 @@ export const addHlResearchEvents = async ({
         research_id,
         content,
         writer_id,
+        report_date,
         event_date: new Date(),
         writing_date: new Date(),
-        event_type_id,
-        report_date,
-        care_name_hl_id,
-        care_type_id,
-        close_date,
-        event_status,
-        version_list_id,
-        remarks,
-        before_confirm,
-        is_ready,
-        event_group_id,
-        version_id,
-        paid_up,
-        chairman_decision,
-        amount,
-        message_id,
+        event_type_id: 12,
+        care_type_id: 0,
+        event_status: 1,
+        before_confirm: 0,
+        is_ready: 0,
       },
     });
   } catch (error) {

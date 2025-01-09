@@ -8,6 +8,7 @@ export const getResearch = async ({ todayMin91 }: { todayMin91: Date }) => {
   try {
     const research = await helsinkidb.researchs.findFirst({
       where: {
+        status_id:3,
         end_date: {
           gte: todayMin91, 
           lte:new Date()

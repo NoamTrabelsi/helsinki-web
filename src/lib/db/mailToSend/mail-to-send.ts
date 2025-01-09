@@ -4,13 +4,7 @@ import { PrismaClient } from "@prisma/client";
 const helsinkidb = new PrismaClient();
 
 // get Mail To Send
-export const getMailToSend = async ({
-  lastId,
-  take,
-}: {
-  lastId?: number;
-  take?: number;
-}) => {
+export const getMailToSend = async () => {
   try {
     const mailToSend = await helsinkidb.mail_to_send.findFirst({
       where: {
@@ -18,9 +12,6 @@ export const getMailToSend = async ({
           lte: new Date(),
         },
       },
-      take: take || 100,
-      skip: lastId ? 1 : 0, // Skip the last record
-      cursor: lastId ? { id: lastId } : undefined, // Start after the last fetched record
       orderBy: {
         id: "desc",
       },

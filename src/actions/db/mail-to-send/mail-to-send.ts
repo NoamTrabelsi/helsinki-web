@@ -2,9 +2,9 @@
 import * as db from "@/lib/db/mailToSend/mail-to-send";
 import { catchHandler } from "@/utils/catch-handlers";
 
-export const getMailToSend = async ({lastId,take}: { lastId?: number; take?: number }) => {
+export const getMailToSend = async () => {
   try {
-    return await db.getMailToSend({lastId,take});
+    return await db.getMailToSend();
   } catch (error: unknown) {
     return catchHandler(error, "action", "get Mail To Send");
   }

@@ -8,6 +8,6 @@ export const getOleTable = async ({ id }: { id?: number }) => {
   try {
     return await db.getOleTable({id});
   } catch (error) {
-    return catchHandler(error, "DB", "get contacts");
+    return catchHandler(error, "action", "get contacts");
   }
 };

@@ -5,7 +5,7 @@ export const catchHandler = (
     setError?: React.Dispatch<React.SetStateAction<string>>
   ): { error?: string; data?: unknown }| void => {
     const error = JSON.parse(JSON.stringify(err));
-    console.log("full error",fanctionName, error);
+    console.log(type,":", fanctionName, error);
     const errorJson = {
       type,
       message: "",

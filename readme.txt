@@ -22,5 +22,8 @@ npm install use-debounce
 npm install nodemailer
 npm install --save-dev @types/nodemailer
 
-node prisma/script/import-tasks.js
+npm install node-schedule
+npm install --save-dev @types/node-schedule
+
+node prisma/script/import-mailer.js
 

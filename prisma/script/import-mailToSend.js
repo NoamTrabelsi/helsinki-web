@@ -10,14 +10,15 @@ async function main() {
       mail_subject: "תזכורת לחידוש תוקף ביטוח למחקר: 0007-23-SMC",
       mail_content:
         "שלום רב,<br><br>,תוקף הביטוח למחקר:0007-23-SMCבנושא: ללא מוצר מחקר עם טופס הסכמה<br>עומד לפוג בתאריך: 27/12/2023<br>",
-      mail_address_to: "noam@prodify.com",
-      research_id: 5106,
+      mail_address_to: "@prodify.com",
+      mail_type:42,
+      research_id: 5257,
       mail_date:new Date(),
-      ole_table_id:0,
-      researcher:0,
-      authorizations:0,
+      ole_table_id:16285,
+      researcher:1,
+      authorizations:1,
       site_id:1,
-      cyclic:0,
+      cyclic:30,
     },
   ];
 

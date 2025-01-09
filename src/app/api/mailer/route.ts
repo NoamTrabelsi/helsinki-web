@@ -6,8 +6,6 @@ import nodemailer from "nodemailer";
 import { getAttachments, validEmails } from "./attachment";
 import { sleep } from "@/utils/sleep";
 
-const interval = 10 * 60 * 1000; //10 דק
-
 export async function POST() {
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
@@ -19,7 +17,7 @@ export async function POST() {
     },
   });
   if (!transporter) {
-    catchHandler("error", "API", "create transport");
+    catchHandler("error", "webhook - mailer", "create transport");
     return NextResponse.json({ message: "transport is null" }, { status: 500 });
   }
   while (true) {
@@ -39,7 +37,11 @@ export async function POST() {
       };
       mailer = answer?.data;
     } catch (error) {
-      catchHandler(error, "API", "get mailer");
+      catchHandler(error, "webhook - mailer", "get mailer");
+      return NextResponse.json(
+        { message: "Failed to get mailer" },
+        { status: 500 }
+      );
     }
     if (mailer) {
       const { id, to, cc, bcc, subject, body, attachments, appType } = mailer;
@@ -49,7 +51,7 @@ export async function POST() {
       const bccArray = bcc ? validEmails(bcc) : [];
       let errMail = "נשלח בהצלחה\n";
       const def = arrTo.filter((item: string) => !toArray.includes(item));
-      if (def.length > 0) {
+      if (def.length > 1) {
         errMail += `אך יש שגיאות במיילים הבאים : ${def} \n`;
       }
       if (toArray) {
@@ -83,26 +85,33 @@ export async function POST() {
             errMsg: errMail,
             sentDate: new Date(),
           });
-        } catch (err) {
-          catchHandler(err, "API", "update mailer");
+        } catch (error) {
+          catchHandler(error, "webhook - mailer", "update mailer");
+          return NextResponse.json(
+            { message: "Failed to update mailer" },
+            { status: 500 }
+          );
         }
-      } catch (err) {
-        catchHandler(err, "API", "send mailer");
+      } catch (error) {
+        catchHandler(error, "webhook - mailer", "send mailer");
         try {
-          const error = JSON.parse(JSON.stringify(err));
+          const err = JSON.parse(JSON.stringify(error));
           await updateMailer(id, {
             status: 2,
-            errCode: error.responseCode,
-            errMsg: error.response,
+            errCode: err.responseCode ? err.responseCode : 500,
+            errMsg: err.response ? err.response : "Something went wrong",
           });
         } catch (err) {
-          catchHandler(err, "API", "update mailer");
+          catchHandler(err, "webhook - mailer", "update mailer");
+          return NextResponse.json(
+            { message: "Failed to update mailer" },
+            { status: 500 }
+          );
         }
       }
       await sleep(2000);
     } else {
-      await sleep(interval);
+      return NextResponse.json({ message: "sleep" }, { status: 200 });
     }
   }
 }
-
