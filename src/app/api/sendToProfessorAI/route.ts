@@ -12,7 +12,6 @@ import { getHtmlBody } from "./attachment";
 import { sleep } from "@/utils/sleep";
 import { NextResponse } from "next/server";
 
-const interval = 10 * 60 * 1000; //10 דק
 const ProfesorAiBASE = process.env.PROFESORAI_BASEURL;
 const ProfesorAiApiENDPOINT =
   process.env.PROFESORAI_PRODIFY_HELSINKI_API_ENDPOINT;

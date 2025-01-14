@@ -1,6 +1,5 @@
 "use server";
 import { catchHandler } from "@/utils/catch-handlers";
-import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { validEmails } from "../mailer/attachment";
 
@@ -26,11 +25,6 @@ export async function POST(req: Request) {
     const { to, subject, body, attachments } = mailer;
     const arrTo = to.split(";").map((email: string) => email.trim());
     let toArray = validEmails(to);
-    let errMail = "נשלח בהצלחה\n";
-    const def = arrTo.filter((item: string) => !toArray.includes(item));
-    if (def.length > 1) {
-      errMail += `אך יש שגיאות במיילים הבאים : ${def} \n`;
-    }
     if (toArray) {
       toArray = arrTo;
     }
@@ -48,5 +42,8 @@ export async function POST(req: Request) {
     }
     return Response.json({ data: new Date() }, { status: 200 });
   }
-  return Response.json({ message: "there is no mail to send" }, { status: 500 });
+  return Response.json(
+    { message: "there is no mail to send" },
+    { status: 500 }
+  );
 }
