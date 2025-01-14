@@ -10,6 +10,7 @@ import {
 import { catchHandler } from "@/utils/catch-handlers";
 import { getHtmlBody } from "./attachment";
 import { sleep } from "@/utils/sleep";
+import { NextResponse } from "next/server";
 
 const interval = 10 * 60 * 1000; //10 דק
 const ProfesorAiBASE = process.env.PROFESORAI_BASEURL;
@@ -177,7 +178,7 @@ export async function POST() {
         );
       }
     } else {
-      await sleep(interval);
+      return NextResponse.json({ message: "sleep" }, { status: 200 });
     }
   }
 }

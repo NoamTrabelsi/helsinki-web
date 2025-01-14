@@ -6,21 +6,24 @@ const helsinkidb = new PrismaClient();
 //get Hl Research Events
 export const getHlResearchEvents = async ({
   research_id,
-  todayMin91,
+  todayPlus91,
 }: {
   research_id?: number;
-  todayMin91: Date;
+  todayPlus91: Date;
 }) => {
   try {
-    return await helsinkidb.hl_research_events.findFirst({
+    const event = await helsinkidb.hl_research_events.findFirst({
       where: {
-        research_id,
+        research_id: research_id,
+        event_status:1,
+        event_type_id:12,
         report_date: {
-          gte: todayMin91,
-          lte: new Date(),
+          gte: new Date(),
+          lte: todayPlus91,
         },
       },
     });
+    return { data: event };
   } catch (error) {
     return catchHandler(error, "DB", "get hl research events");
   }

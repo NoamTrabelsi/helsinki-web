@@ -7,16 +7,22 @@ import { getResearchr } from "@/actions/db/haarkatMechkar/researchs";
 import { addHlResearchEventsAddF12AddHlLogs } from "@/actions/db/global";
 import { catchHandler } from "@/utils/catch-handlers";
 import { sleep } from "@/utils/sleep";
-
-const interval = 10 * 60 * 1000; //10 דק
+import { NextResponse } from "next/server";
 
 export async function POST() {
+  const excluded_ids: number[] = [];
+
   while (true) {
     let researchs;
     let writer;
     let content;
+    const todayPlus91 = new Date();
+    todayPlus91.setDate(todayPlus91.getDate() + 91);
     try {
-      const answer = (await getResearchr()) as {
+      const answer = (await getResearchr({
+        todayPlus91,
+        excluded_ids: excluded_ids,
+      })) as {
         data: {
           research_id: number;
           contact_hl_id: number;
@@ -24,85 +30,79 @@ export async function POST() {
         };
       };
       researchs = answer?.data;
-      const asResearch = await getHlResearchEvents({
-        research_id: researchs.research_id,
-      });
-      if (asResearch) {
-        continue;
-      }
+      console.log(researchs);
     } catch (error) {
       catchHandler(error, "webhook - haarkatMechkar", "get Researchr");
     }
-    try {
-      const answer = (await getContact({
-        contact_hl_id: researchs?.contact_hl_id,
-      })) as {
-        data: {
-          contact_id: number;
-        };
-      };
-      writer = answer?.data;
-    } catch (error) {
-      catchHandler(
-        error,
-        "webhook - haarkatMechkar",
-        "get contact id to writer"
-      );
-    }
-    try {
-      const answer = (await getHlEventTypes({
-        hl_event_type_id: 12,
-      })) as {
-        data: {
-          event_type: string;
-        };
-      };
-      content = answer?.data;
-    } catch (error) {
-      catchHandler(error, "webhook - haarkatMechkar", "get Hl Event Types");
-    }
-    if (researchs && content && writer) {
+    if (researchs) {
       try {
-        await addHlResearchEventsAddF12AddHlLogs({
+        const asResearch = (await getHlResearchEvents({
           research_id: researchs.research_id,
-          content: content.event_type,
-          writer_id: writer.contact_id,
-          report_date: researchs.end_date,
-          validity_date: researchs.end_date,
-          contact_hl_id: researchs.contact_hl_id,
-          module_number: researchs.research_id,
-          contact_id: researchs.contact_hl_id,
-        });
+          todayPlus91: todayPlus91,
+        })) as {
+          data: {
+            hl_research_event_id: number;
+          };
+        };
+        if (asResearch.data?.hl_research_event_id) {
+          // return NextResponse.json({ message: "there is id" }, { status: 200 });
+          excluded_ids.push(researchs.research_id);
+          continue;
+        }
       } catch (error) {
-        catchHandler(error, "webhook - haarkatMechkar", "transaction");
+        catchHandler(
+          error,
+          "webhook - haarkatMechkar",
+          "get Hl Research Events"
+        );
+      }
+      try {
+        const answer = (await getContact({
+          contact_hl_id: researchs?.contact_hl_id,
+        })) as {
+          data: {
+            contact_id: number;
+          };
+        };
+        writer = answer?.data;
+      } catch (error) {
+        catchHandler(
+          error,
+          "webhook - haarkatMechkar",
+          "get contact id to writer"
+        );
+      }
+      try {
+        const answer = (await getHlEventTypes({
+          hl_event_type_id: 12,
+        })) as {
+          data: {
+            event_type: string;
+          };
+        };
+        content = answer?.data;
+      } catch (error) {
+        catchHandler(error, "webhook - haarkatMechkar", "get Hl Event Types");
+      }
+      if (content && writer) {
+        try {
+          await addHlResearchEventsAddF12AddHlLogs({
+            research_id: researchs.research_id,
+            content: content.event_type,
+            writer_id: writer.contact_id,
+            report_date: researchs.end_date,
+            validity_date: researchs.end_date,
+            contact_hl_id: researchs.contact_hl_id,
+            module_number: researchs.research_id,
+            contact_id: researchs.contact_hl_id,
+          });
+        } catch (error) {
+          catchHandler(error, "webhook - haarkatMechkar", "transaction");
+        }
+        await sleep(2000);
       }
     } else {
-      await sleep(interval);
+      return NextResponse.json({ message: "sleep" }, { status: 200 });
     }
   }
 }
-
-// const event = (await addHlResearchEvents({
-//   research_id: researchs.research_id,
-//   content: content.event_type,
-//   writer_id: writer.contact_id,
-//   report_date: researchs.end_date,
-// })) as { data: { hl_research_event_id: number } };
-// try {
-//   await addF12({
-//     research_id: researchs.research_id,
-//     research_event_id: event.data.hl_research_event_id,
-//     validity_date: researchs.end_date,
-//     contact_hl_id: researchs.contact_hl_id,
-//   });
-//   try {
-//     await addHlLogs({
-//       module_number: researchs.research_id,
-//       contact_id: researchs.contact_hl_id,
-//     });
-//   } catch (error) {
-//     catchHandler(error, "webhook - haarkatMechkar", "add Hl Logs");
-//   }
-// } catch (error) {
-//   catchHandler(error, "webhook - haarkatMechkar", "add F_12");
-// }

@@ -4,13 +4,13 @@ import { catchHandler } from "@/utils/catch-handlers";
 
 export const getHlResearchEvents = async ({
   research_id,
+  todayPlus91,
 }: {
   research_id?: number;
+  todayPlus91: Date;
 }) => {
   try {
-    const todayMin91 = new Date();
-    todayMin91.setDate(todayMin91.getDate() - 91);
-    return await db.getHlResearchEvents({ research_id, todayMin91 });
+    return await db.getHlResearchEvents({ research_id, todayPlus91 });
   } catch (error: unknown) {
     return catchHandler(error, "action", "get hl research events");
   }

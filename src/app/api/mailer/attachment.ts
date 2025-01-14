@@ -48,6 +48,7 @@ export async function getAttachments(
       })
     );
   }
+  else if(appType === "")
   validAttachments = validAttachments.filter(
     (attachment): attachment is Attachment => attachment.filename !== undefined
   );
