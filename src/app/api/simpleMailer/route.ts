@@ -3,22 +3,33 @@ import { catchHandler } from "@/utils/catch-handlers";
 import nodemailer from "nodemailer";
 import { validEmails } from "../mailer/attachment";
 
-export async function POST(req: Request) {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
-    secure: false,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
+export async function POST(request: Request) {
+  let transporter;
+  try {
+    transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT),
+      secure: false,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+  } catch (error) {
+    catchHandler(error, "webhook - mailer", "create transport");
+  }
   if (!transporter) {
     catchHandler("error", "webhook - mailer", "create transport");
     return Response.json({ message: "transport is null" }, { status: 500 });
   }
-  const answer = await req.text();
-  const mailer = JSON.parse(answer);
+  let mailer;
+  try {
+    const answer = await request.text();    
+    mailer = JSON.parse(answer);
+  } catch (error) {
+    catchHandler(error, "webhook - mailer", "get mailer");
+  }
+
   console.log(mailer);
 
   if (mailer) {
@@ -33,7 +44,13 @@ export async function POST(req: Request) {
         from: process.env.NEXT_PUBLIC_EMAIL_TO,
         to: toArray,
         subject: subject || "No Subject",
-        attachments: attachments || undefined,
+        attachments: [
+          {
+            filename: "encoded.pdf",
+            content: Buffer.from(attachments, "base64") ,
+            encoding: "base64",
+          },
+        ],
         html: body,
       });
     } catch (error) {

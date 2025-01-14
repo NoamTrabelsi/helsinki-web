@@ -3,7 +3,7 @@
 import HomeComponent from '@/components/home-component';
 // import HometestComponent from '@/components/home-test';
 
-const HomePage = () => {  
+const HomePage = async() => {  
   return (
     <HomeComponent />
     // <HometestComponent />
