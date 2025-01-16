@@ -15,7 +15,6 @@ import { getAuthorizations } from "@/actions/db/mail-to-send/authorizations";
 import { getGlobalParamenters } from "@/actions/db/mail-to-send/global-paramenters";
 import { sleep } from "@/utils/sleep";
 import { addMailerAddMailToSendArchive } from "@/actions/db/global";
-import { createEmailBody } from "./body";
 
 export async function POST() {
   const appType = "matarotHelsinki";
@@ -154,11 +153,10 @@ export async function POST() {
           );
         }
       }
-      const body = createEmailBody(mail_content)
       try {
         await addMailerAddMailToSendArchive({
           subject: mail_subject,
-          body: body,
+          body: mail_content,
           to: mail_address_to + (";" + mail || ""),
           cc: mail_address_cc,
           bcc: mail_address_bcc + mailTypeBCC,

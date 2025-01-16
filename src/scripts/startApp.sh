@@ -13,7 +13,7 @@ log_message() {
  
 # Start the Next.js app in the background
 log_message "Starting Next.js app on port $PORT..."
-next start -p $PORT &
+npx next start -p $PORT &
  
 # Get the process ID of the Next.js app
 NEXT_PID=$!
