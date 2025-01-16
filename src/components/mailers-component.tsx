@@ -86,7 +86,7 @@ const MailersComponent = ({ mailers }: { mailers: Mailer[] }) => {
       params.delete(param);
     }
     replace(`${pathname}?${params.toString()}`);
-  }, 3000);
+  }, 300);
 
   const formatError = (
     errCode: number | null,
@@ -177,9 +177,7 @@ const MailersComponent = ({ mailers }: { mailers: Mailer[] }) => {
     }
   };
   const statusApp = (mailer: string) => {
-    if (mailer === "matarotAychut") {
-      return "מטרות איכות";
-    } else if (mailer === "matarotHelsinki") {
+    if (mailer === "matarotHelsinki") {
       return "מטרות הלסינקי";
     } else if (mailer === "haschama") {
       return "טפסי הסכמה";
@@ -200,7 +198,9 @@ const MailersComponent = ({ mailers }: { mailers: Mailer[] }) => {
             <TooltipTrigger asChild>
               <pre>...</pre>
             </TooltipTrigger>
-            <TooltipContent className="max-w-[200px] break-words">{text}</TooltipContent>
+            <TooltipContent className="max-w-[200px] break-words">
+              {text}
+            </TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </div>
@@ -222,7 +222,6 @@ const MailersComponent = ({ mailers }: { mailers: Mailer[] }) => {
               <SelectLabel>אפליקציה</SelectLabel>
               <SelectItem value="all">---הכול---</SelectItem>
               <SelectItem value="matarotHelsinki">מטרות הלסינקי</SelectItem>
-              <SelectItem value="matarotAychut">מטרות איכות</SelectItem>
               <SelectItem value="haschama">טפסי הסכמה</SelectItem>
             </SelectGroup>
           </SelectContent>
