@@ -10,9 +10,10 @@ import {
   X,
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { updateMailer } from "@/actions/db/mailer/mailer";
+import { getMailers, updateMailer } from "@/actions/db/mailer/mailer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useInView } from "react-intersection-observer";
 import {
   Table,
   TableBody,
@@ -50,14 +51,27 @@ import {
 import { useDebouncedCallback } from "use-debounce";
 import { catchHandler } from "@/utils/catch-handlers";
 import { Mailer } from "@prisma/client";
+import { Spinner } from "./ui/spinner";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
-const MailersComponent = ({ mailers }: { mailers: Mailer[] }) => {
+const MailersComponent = ({
+  initioalMailers,
+}: {
+  initioalMailers: Mailer[];
+}) => {
   const [status, setStatus] = useState<string>("");
   const [appType, setAppType] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const [searchSubject, setSearchSubject] = useState<string>("");
-  const [searchBody, setSearchBody] = useState<string>("");
-  const [searchRecipient, setSearchRecipient] = useState<string>("");
+  const [subject, setSubject] = useState<string>("");
+  const [body, setBody] = useState<string>("");
+  const [to, setTo] = useState<string>("");
+  const [lastId, setLastId] = useState<number>(0);
+  const [skip, setSkip] = useState<boolean>(false);
+  const [mailers, setMailers] = useState<Mailer[]>([]);
+  const { ref, inView } = useInView({
+    threshold: 0.5,
+    skip,
+  });
 
   const { replace } = useRouter();
   const searchParams = useSearchParams();
@@ -74,10 +88,51 @@ const MailersComponent = ({ mailers }: { mailers: Mailer[] }) => {
     setAppType(searchParams?.get("to") || "");
     setAppType(searchParams?.get("appType") || "");
     setStatus(searchParams?.get("status") || "");
-    setSearchSubject(searchParams?.get("subject") || "");
-    setSearchBody(searchParams?.get("body") || "");
+    setSubject(searchParams?.get("subject") || "");
+    setBody(searchParams?.get("body") || "");
   }, [searchParams]);
 
+  useEffect(() => {
+    if (mailers && mailers.length) {
+      const lastRow = mailers[mailers.length - 1];
+      setLastId(lastRow?.id);
+    } else {
+      // setSkip(true);
+    }
+  }, [mailers]);
+
+  useEffect(() => {
+    if (initioalMailers && initioalMailers.length) {
+      setMailers(initioalMailers);
+      setSkip(false);
+    } else {
+      setMailers([]);
+      setSkip(true);
+    }
+  }, [initioalMailers]);
+
+  useEffect(() => {
+    if (inView) {
+      loadMoreRows();
+    }
+  }, [inView]);
+
+  const loadMoreRows = async () => {
+    const newRows = (await getMailers({
+      lastId,
+      to: to != "" ? to : undefined,
+      appType: appType != "" ? appType : undefined,
+      status: status != "" ? +status : undefined,
+      subject: subject != "" ? subject : undefined,
+      body: body != "" ? body : undefined,
+    })) as Mailer[];
+
+    if (!newRows || !newRows.length) {
+      setSkip(true);
+    } else {
+      setMailers((prevState: Mailer[]) => [...prevState, ...newRows]);
+    }
+  };
   const handleSearch = useDebouncedCallback((param: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     if (value && value != "all") {
@@ -207,9 +262,9 @@ const MailersComponent = ({ mailers }: { mailers: Mailer[] }) => {
     );
   };
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="h-[calc(100vh-10rem)] m-4">
       <h1 className="text-2xl font-bold mb-6 text-center">רשימת מיילים</h1>
-      <div className="flex flex-row space-x-4">
+      <div className="flex flex-row gap-4 my-4">
         <Select
           onValueChange={(value: string) => handleSearch("appType", value)}
           value={appType}
@@ -247,9 +302,9 @@ const MailersComponent = ({ mailers }: { mailers: Mailer[] }) => {
           placeholder="חפש בכותרת"
           id="search"
           name="search"
-          value={searchSubject}
+          value={subject}
           onChange={(e) => {
-            setSearchSubject(e.target.value);
+            setSubject(e.target.value);
             handleSearch("subject", e.target.value);
           }}
         />
@@ -258,9 +313,9 @@ const MailersComponent = ({ mailers }: { mailers: Mailer[] }) => {
           placeholder="חפש בתוכן"
           id="search"
           name="search"
-          value={searchBody}
+          value={body}
           onChange={(e) => {
-            setSearchBody(e.target.value);
+            setBody(e.target.value);
             handleSearch("body", e.target.value);
           }}
         />
@@ -269,9 +324,9 @@ const MailersComponent = ({ mailers }: { mailers: Mailer[] }) => {
           placeholder="חפש נמען"
           id="search"
           name="search"
-          value={searchRecipient}
+          value={to}
           onChange={(e) => {
-            setSearchRecipient(e.target.value);
+            setTo(e.target.value);
             handleSearch("to", e.target.value);
           }}
         />
@@ -279,113 +334,64 @@ const MailersComponent = ({ mailers }: { mailers: Mailer[] }) => {
           <RefreshCcw />
         </Button>
       </div>
-      <div className="p-8 w-full">
-        <div className="overflow-x-auto h-[70vh] border rounded-md">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>נוֹשֵׂא</TableHead>
-                <TableHead>גוּף</TableHead>
-                <TableHead>נִמְעָן</TableHead>
-                <TableHead>עֹתֶק</TableHead>
-                <TableHead>עֹתֶק מֻסְתָּר</TableHead>
-                <TableHead></TableHead>
-                <TableHead>סטָטוּס</TableHead>
-                <TableHead>תַּאַרִּיךְ שְׁלִיחָה מְתַכְנֶּן</TableHead>
-                <TableHead>תַּאַרִּיךְ שְׁלִיחָה</TableHead>
-                <TableHead>אֲפְלִיקַצְיָה</TableHead>
-                <TableHead></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {mailers.map((mailer) => (
-                <TableRow key={mailer.id}>
-                  <TableCell>{mailer.subject}</TableCell>
-                  <TableCell>
-                    {truncateText(mailer.body.replace(/<\/?[^>]+(>|$)/g, ""))}
-                  </TableCell>
-                  <TableCell>
-                    <pre>{formatEmails(mailer.to)}</pre>
-                  </TableCell>
-                  <TableCell>
-                    <pre>{formatEmails(mailer.cc)}</pre>
-                  </TableCell>
-                  <TableCell>
-                    <pre>{formatEmails(mailer.bcc)}</pre>
-                  </TableCell>
-                  <TableCell>
-                    {formatError(mailer.errCode, mailer.errMsg, mailer.status)}
-                  </TableCell>
-                  <TableCell>
-                    {statusEmails(mailer.status.toString())}
-                  </TableCell>
-                  <TableCell>
-                    {mailer.sendDate
-                      ? new Date(mailer.sendDate).toLocaleDateString("en-GB")
-                      : null}
-                  </TableCell>
-                  <TableCell>
-                    {mailer.sentDate
-                      ? new Date(mailer.sentDate).toLocaleString("en-GB", {
-                          timeZone: "Asia/Jerusalem",
-                        })
-                      : null}
-                  </TableCell>
-                  <TableCell>{statusApp(mailer.appType.toString())}</TableCell>
-                  <TableCell className="space-x-1.5">
-                    {mailer.status === 2 &&
-                      (mailer.errCode === null || mailer.errCode < 500) && (
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button className="bg-green-500 hover:bg-green-700">
-                              <SendHorizontal />
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>
-                                האם אתה בטוח ?
-                              </AlertDialogTitle>
-                              <AlertDialogDescription>
-                                לא ניתן לבטל פעולה זו. פעולה זו תשלח את המייל
-                                מחדש.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>ביטול</AlertDialogCancel>
-                              <AlertDialogAction
-                                onClick={async () => {
-                                  try {
-                                    await updateMailer(mailer.id, {
-                                      status: 1,
-                                      sentDate: new Date(),
-                                    });
-                                    const data = await fetch("/api/mailer", {
-                                      method: "POST",
-                                    });
-                                    await data.json();
-                                    router.refresh();
-                                  } catch (error) {
-                                    catchHandler(
-                                      error,
-                                      "Mailer",
-                                      "resend mailer",
-                                      setError
-                                    );
-                                  }
-                                }}
-                              >
-                                המשך
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      )}
-                    {mailer.status === 1 && (
+
+      <ScrollArea className="h-full rounded-md border overflow-auto max-h-fit">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>נוֹשֵׂא</TableHead>
+              <TableHead>גוּף</TableHead>
+              <TableHead>נִמְעָן</TableHead>
+              <TableHead>עֹתֶק</TableHead>
+              <TableHead>עֹתֶק מֻסְתָּר</TableHead>
+              <TableHead></TableHead>
+              <TableHead>סטָטוּס</TableHead>
+              <TableHead>תַּאַרִּיךְ שְׁלִיחָה מְתַכְנֶּן</TableHead>
+              <TableHead>תַּאַרִּיךְ שְׁלִיחָה</TableHead>
+              <TableHead>אֲפְלִיקַצְיָה</TableHead>
+              <TableHead></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {mailers.map((mailer) => (
+              <TableRow key={mailer.id}>
+                <TableCell>{mailer.subject}</TableCell>
+                <TableCell>
+                  {truncateText(mailer.body.replace(/<\/?[^>]+(>|$)/g, ""))}
+                </TableCell>
+                <TableCell>
+                  <pre>{formatEmails(mailer.to)}</pre>
+                </TableCell>
+                <TableCell>
+                  <pre>{formatEmails(mailer.cc)}</pre>
+                </TableCell>
+                <TableCell>
+                  <pre>{formatEmails(mailer.bcc)}</pre>
+                </TableCell>
+                <TableCell>
+                  {formatError(mailer.errCode, mailer.errMsg, mailer.status)}
+                </TableCell>
+                <TableCell>{statusEmails(mailer.status.toString())}</TableCell>
+                <TableCell>
+                  {mailer.sendDate
+                    ? new Date(mailer.sendDate).toLocaleDateString("en-GB")
+                    : null}
+                </TableCell>
+                <TableCell>
+                  {mailer.sentDate
+                    ? new Date(mailer.sentDate).toLocaleString("en-GB", {
+                        timeZone: "Asia/Jerusalem",
+                      })
+                    : null}
+                </TableCell>
+                <TableCell>{statusApp(mailer.appType.toString())}</TableCell>
+                <TableCell className="space-x-1.5">
+                  {mailer.status === 2 &&
+                    (mailer.errCode === null || mailer.errCode < 500) && (
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button>
-                            <Archive />
+                          <Button className="bg-green-500 hover:bg-green-700">
+                            <SendHorizontal />
                           </Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
@@ -393,7 +399,7 @@ const MailersComponent = ({ mailers }: { mailers: Mailer[] }) => {
                             <AlertDialogTitle>האם אתה בטוח ?</AlertDialogTitle>
                             <AlertDialogDescription>
                               לא ניתן לבטל פעולה זו. פעולה זו תשלח את המייל
-                              לארכיון.
+                              מחדש.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
@@ -401,19 +407,20 @@ const MailersComponent = ({ mailers }: { mailers: Mailer[] }) => {
                             <AlertDialogAction
                               onClick={async () => {
                                 try {
-                                  const result = await updateMailer(mailer.id, {
-                                    status: 2,
+                                  await updateMailer(mailer.id, {
+                                    status: 1,
+                                    sentDate: new Date(),
                                   });
-                                  if (result?.error) {
-                                    setError(result.error);
-                                  } else {
-                                    router.refresh();
-                                  }
+                                  const data = await fetch("/api/mailer", {
+                                    method: "POST",
+                                  });
+                                  await data.json();
+                                  router.refresh();
                                 } catch (error) {
                                   catchHandler(
                                     error,
                                     "Mailer",
-                                    "Archive mailer",
+                                    "resend mailer",
                                     setError
                                   );
                                 }
@@ -425,13 +432,62 @@ const MailersComponent = ({ mailers }: { mailers: Mailer[] }) => {
                         </AlertDialogContent>
                       </AlertDialog>
                     )}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                  {mailer.status === 1 && (
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button>
+                          <Archive />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>האם אתה בטוח ?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            לא ניתן לבטל פעולה זו. פעולה זו תשלח את המייל
+                            לארכיון.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>ביטול</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={async () => {
+                              try {
+                                const result = await updateMailer(mailer.id, {
+                                  status: 2,
+                                });
+                                if (result?.error) {
+                                  setError(result.error);
+                                } else {
+                                  router.refresh();
+                                }
+                              } catch (error) {
+                                catchHandler(
+                                  error,
+                                  "Mailer",
+                                  "Archive mailer",
+                                  setError
+                                );
+                              }
+                            }}
+                          >
+                            המשך
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <div
+          className="flex justify-center items-center p-4 col-span-1 sm:col-span-2 md:col-span-3"
+          ref={ref}
+        >
+          {!skip && <Spinner />}
         </div>
-      </div>
+      </ScrollArea>
     </div>
   );
 };

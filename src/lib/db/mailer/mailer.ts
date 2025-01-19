@@ -75,7 +75,7 @@ export const getMailers = async ({
           },
         ],
       },
-      take: take || 100,
+      take: take || 20,
       skip: lastId ? 1 : 0, // Skip the last record
       cursor: lastId ? { id: lastId } : undefined, // Start after the last fetched record
       orderBy: {

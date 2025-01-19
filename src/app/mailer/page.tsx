@@ -25,7 +25,7 @@ const mailersPage = async ({
       body: body ? body : undefined,
     });
 
-    return <MailersComponent mailers={mailers?.data as Mailer[]} />;
+    return <MailersComponent initioalMailers={mailers?.data as Mailer[]} />;
   } catch (error) {
     return catchHandler(error, "page", "get mailer");
   }

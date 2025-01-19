@@ -16,6 +16,8 @@ npx shadcn@latest add select
 npx shadcn@latest add input
 npx shadcn@latest add alert-dialog
 npx shadcn@latest add alert
+npx shadcn@latest add scroll-area
+
 
 npm install use-debounce
 
@@ -24,6 +26,8 @@ npm install --save-dev @types/nodemailer
 
 npm install node-schedule
 npm install --save-dev @types/node-schedule
+
+npm i react-intersection-observer
 
 node prisma/script/import-mailer.js
 
