@@ -5,17 +5,17 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { getAttachments, validEmails } from "./attachment";
 import { sleep } from "@/utils/sleep";
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  secure: false,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
 export async function POST() {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
-    secure: false,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
   if (!transporter) {
     catchHandler("error", "webhook - mailer", "create transport");
     return NextResponse.json({ message: "transport is null" }, { status: 500 });
@@ -111,6 +111,7 @@ export async function POST() {
       }
       await sleep(2000);
     } else {
+      transporter.close();
       return NextResponse.json({ message: "sleep" }, { status: 200 });
     }
   }

@@ -15,6 +15,7 @@ import { getAuthorizations } from "@/actions/db/mail-to-send/authorizations";
 import { getGlobalParamenters } from "@/actions/db/mail-to-send/global-paramenters";
 import { sleep } from "@/utils/sleep";
 import { addMailerAddMailToSendArchive } from "@/actions/db/global";
+import { createEmailBody } from "./body";
 
 export async function POST() {
   const appType = "matarotHelsinki";
@@ -86,11 +87,8 @@ export async function POST() {
       } catch (error) {
         catchHandler(error, "mail to send - webhook", "get Research");
       }
-      if(!research){
-        return NextResponse.json(
-          { message: "No research" },
-          { status: 500 }
-        );
+      if (!research) {
+        return NextResponse.json({ message: "No research" }, { status: 500 });
       }
       if (researcher !== 0) {
         let principalResearcher;
@@ -156,10 +154,10 @@ export async function POST() {
       try {
         await addMailerAddMailToSendArchive({
           subject: mail_subject,
-          body: mail_content,
+          body: createEmailBody(mail_content),
           to: mail_address_to + (";" + mail || ""),
           cc: mail_address_cc,
-          bcc: mail_address_bcc + mailTypeBCC,
+          bcc: mail_address_bcc + (";" + mailTypeBCC || ""),
           attachments: attachments,
           appType: appType,
           mail_type: mail_type,

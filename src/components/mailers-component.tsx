@@ -239,9 +239,10 @@ const MailersComponent = ({
     }
   };
   const truncateText = (text: string) => {
-    if (text.length <= 50) return text;
-    let truncated = text.slice(0, 50);
-    if (text[50] !== " " && truncated.lastIndexOf(" ") !== -1) {
+    const txt = text.replace(/\s+/g, " ").trim();
+    if (txt.length <= 50) return txt;
+    let truncated = txt.slice(0, 50);
+    if (txt[50] !== " " && truncated.lastIndexOf(" ") !== -1) {
       truncated = truncated.slice(0, truncated.lastIndexOf(" "));
     }
 
@@ -262,9 +263,27 @@ const MailersComponent = ({
     );
   };
   return (
-    <div className="h-[calc(100vh-10rem)] m-4">
-      <h1 className="text-2xl font-bold mb-6 text-center">רשימת מיילים</h1>
+    <div className="h-[calc(100vh-10rem)] m-4" dir="rtl">
+      <h1 className="text-2xl font-bold mb-6 text-center">ארכיון דוא&quot;ל מערכת מטרות</h1>
       <div className="flex flex-row gap-4 my-4">
+      <Button
+        onClick={async () => {
+          await fetch("/api/mailer", {
+            method: "POST",
+          });
+        }}
+      >
+        MAILER - הפעלה של
+      </Button>
+      <Button
+        onClick={async () => {
+          await fetch("/api/mailToSend", {
+            method: "POST",
+          });
+        }}
+      >
+        mailToSend - הפעלה של
+      </Button>
         <Select
           onValueChange={(value: string) => handleSearch("appType", value)}
           value={appType}
@@ -299,7 +318,7 @@ const MailersComponent = ({
         </Select>
         <Input
           type="search"
-          placeholder="חפש בכותרת"
+          placeholder="חפש בנושא"
           id="search"
           name="search"
           value={subject}
@@ -310,7 +329,7 @@ const MailersComponent = ({
         />
         <Input
           type="search"
-          placeholder="חפש בתוכן"
+          placeholder='חיפוש בגוף הדוא"ל'
           id="search"
           name="search"
           value={body}
@@ -336,19 +355,19 @@ const MailersComponent = ({
       </div>
 
       <ScrollArea className="h-full rounded-md border overflow-auto max-h-fit">
-        <Table>
+        <Table dir="rtl">
           <TableHeader>
             <TableRow>
-              <TableHead>נוֹשֵׂא</TableHead>
-              <TableHead>גוּף</TableHead>
-              <TableHead>נִמְעָן</TableHead>
-              <TableHead>עֹתֶק</TableHead>
-              <TableHead>עֹתֶק מֻסְתָּר</TableHead>
-              <TableHead></TableHead>
-              <TableHead>סטָטוּס</TableHead>
-              <TableHead>תַּאַרִּיךְ שְׁלִיחָה מְתַכְנֶּן</TableHead>
-              <TableHead>תַּאַרִּיךְ שְׁלִיחָה</TableHead>
-              <TableHead>אֲפְלִיקַצְיָה</TableHead>
+              <TableHead className="font-bold text-right">נוֹשֵׂא</TableHead>
+              <TableHead className="font-bold text-right">גוּף</TableHead>
+              <TableHead className="font-bold text-right">נִמְעָן</TableHead>
+              <TableHead className="font-bold text-right">עֹתֶק</TableHead>
+              <TableHead className="font-bold text-right">עֹתֶק מֻסְתָּר</TableHead>
+              <TableHead className="font-bold text-right"></TableHead>
+              <TableHead className="font-bold text-right">סטָטוּס</TableHead>
+              <TableHead className="font-bold text-right">תַּאַרִּיךְ שְׁלִיחָה מְתַכְנֶּן</TableHead>
+              <TableHead className="font-bold text-right">תַּאַרִּיךְ שְׁלִיחָה</TableHead>
+              <TableHead className="font-bold text-right">אֲפְלִיקַצְיָה</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>

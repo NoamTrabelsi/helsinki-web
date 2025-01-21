@@ -1,5 +1,7 @@
 #!/bin/bash
- 
+
+cd "$(dirname "$0")/../.."
+
 # Define constants
 PORT=3000
 API_ENDPOINT="http://localhost:$PORT/api/scheduler"

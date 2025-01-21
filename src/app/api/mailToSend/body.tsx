@@ -1,5 +1,4 @@
 export function createEmailBody(mail_content: string) {
-
   return `<!DOCTYPE html>
 <html>
 <head>
@@ -16,10 +15,9 @@ export function createEmailBody(mail_content: string) {
                     <table dir="rtl" cellpadding="0" cellspacing="0" width="100%" border="0" align="center" style="border: 0px solid #dbdfe1">
                         <tr dir="rtl">
                             <td style="padding: 10px" bgcolor="#dbdfe1" valign="middle" align="right">
-                                <img src="cid:COMPANYICON" alt="company" height="40">
                             </td>
                             <td style="padding: 10px; background-color: #dbdfe1" bgcolor="#dbdfe1" valign="middle" align="left">
-                                <img src="cid:HELSINKIICON" height="40">
+                               
                             </td>
                         </tr>
                     </table>
@@ -31,9 +29,6 @@ export function createEmailBody(mail_content: string) {
             <tr>
                 <td dir="rtl" align="right" style="padding: 0.3cm 0.7cm 0.8cm 0.7cm;">
                     <p>${mail_content}</p>
-                    <p>אם המחקר אמור להימשך תקופה נוספת, אנא שלח בקשת הארכת תוקף לועדת הלסינקי בהקדם.</p>
-                    <p>לידיעתך המחקר יופסק אוטומטית באם לא תתבצע הארכת תוקף במועד.</p>
-                    <p>אם המחקר הסתיים עליך לשלוח דו"ח סיום מחקר לועדה. את טופסי הארכת התוקף או הסיום יש למלא בתוכנה בחוצץ "דיווח אירועים ובקשות לשינויים" ולחיצה על כפתור הוספת אירועים ושינויים"</p>
                 </td>
             </tr>
         </tbody>
@@ -43,3 +38,9 @@ export function createEmailBody(mail_content: string) {
 </body>
 </html>`;
 }
+
+
+
+{/* <img src="cid:COMPANYICON" alt="company" height="40"> */}
+
+{/* <img src="cid:HELSINKIICON" height="40"> */}

@@ -18,7 +18,7 @@ export const getMailer = async ({ status }: { status?: number }) => {
         ],
       },
       orderBy: {
-        id: "asc",
+        id: "desc",
       },
     });
     return { data: mailer };
