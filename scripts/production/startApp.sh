@@ -3,7 +3,7 @@
 cd "$(dirname "$0")/../.."
 
 # Define constants
-PORT=3000
+PORT=3001
 API_ENDPOINT="http://localhost:$PORT/api/scheduler"
 PAYLOAD='{"key":"value"}'  # Replace this with your actual JSON payload
 LOG_FILE="scheduler.log"   # Log file for output and errors
