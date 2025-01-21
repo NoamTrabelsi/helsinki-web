@@ -6,7 +6,7 @@ import schedule from "node-schedule";
 //*/20 * * * * * - 20 שניות
 
 export async function POST() {
-  schedule.scheduleJob("*/20 * * * * *", async () => {
+  schedule.scheduleJob("*/10 * * * *", async () => {
     console.log(`Sending request to: http://localhost:3001/api/mailer`);
     try {
       await fetch("http://localhost:3001/api/mailer", {
@@ -17,7 +17,7 @@ export async function POST() {
       console.error("Error triggering Webhook mailer:", error);
     }
   });
-  schedule.scheduleJob("*/20 * * * * *", async () => {
+  schedule.scheduleJob("*/10 * * * *", async () => {
     console.log(`Sending request to: http://localhost:3001/api/mailToSend`);
     try {
       await fetch("http://localhost:3001/api/mailToSend", {
