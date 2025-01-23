@@ -91,7 +91,7 @@ export const addMailerAddMailToSendArchive = async ({
   appId?: string;
   mail_type?: number;
   research_id?: number;
-  mail_date?: Date;
+  mail_date: Date;
   ole_table_id?: number;
   site_id?: number;
   ole_table_st?: string;
@@ -107,7 +107,7 @@ export const addMailerAddMailToSendArchive = async ({
           to: to,
           cc: cc,
           bcc: bcc,
-          sendDate: new Date(),
+          sendDate: mail_date,
           attachments: attachments,
           status: 1,
           appType: appType,

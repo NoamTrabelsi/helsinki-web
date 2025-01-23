@@ -63,7 +63,7 @@ export const addMailerAddMailToSendArchive = async ({
   appId?: string;
   mail_type?: number;
   research_id?: number;
-  mail_date?: Date;
+  mail_date: Date;
   ole_table_id?: number;
   site_id?: number;
   ole_table_st?: string;

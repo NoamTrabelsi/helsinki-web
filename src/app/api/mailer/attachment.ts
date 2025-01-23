@@ -14,45 +14,42 @@ export async function getAttachments(
   const invalidMessages: string[] = [];
   if (appType === "matarotHelsinki") {
     const att = attachments.split(",").map((ole: string) => Number(ole.trim()));
-    validAttachments = await Promise.all(
-      att.map(async (attachment: number) => {
-        let oleTable 
-        try {
-          oleTable= (await getOleTable({ id: attachment })) as {
-            data: { f_name: string; DataFile: Buffer  } ;
-          };
-        } catch (error) {
-          catchHandler(error, "attachment folder", "get ole table");
-        }
-        const filename = oleTable?.data?.f_name;
+    for (const attachment of att) {
+      let oleTable;
+      try {
+        oleTable = (await getOleTable({ id: attachment })) as {
+          data: { f_name: string; DataFile: Buffer };
+        };
+      } catch (error) {
+        catchHandler(error, "attachment folder", "get ole table");
+      }
+      const filename = oleTable?.data?.f_name;
+      const dataFile = oleTable?.data?.DataFile;
+      if (filename !== undefined && dataFile !== undefined) {
+        const fileExtension = filename.split(".").pop()?.toLowerCase(); // מוציא את הסיומת
+        const allowedExtensions = ["docx", "doc", "pdf"]; // סיומות מותרות
 
-        if (filename !== undefined) {
-          const fileExtension = filename.split(".").pop()?.toLowerCase(); // מוציא את הסיומת
-          const allowedExtensions = ["docx", "doc", "pdf"]; // סיומות מותרות
-
-          if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
-            catchHandler(
-              `Invalid file extension: ${fileExtension}`,
-              "mailer",
-              "getAttachments"
-            );
-          }
-        } else {
-          invalidMessages.push(`${attachment}`);
+        if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+          catchHandler(
+            `Invalid file extension: ${fileExtension}`,
+            "mailer",
+            "getAttachments"
+          );
         }
-        return {
+        validAttachments.push({
           filename: filename,
           content: oleTable?.data?.DataFile || undefined,
           encoding: "base64",
-        };
-      })
-    );
+        })
+      } else {
+        invalidMessages.push(`${attachment}`);
+      }
+    }
   }
-  else if(appType === "")
+  // else if(appType === "")
   validAttachments = validAttachments.filter(
     (attachment): attachment is Attachment => attachment.filename !== undefined
   );
-
   return { validAttachments, invalidMessages };
 }
 

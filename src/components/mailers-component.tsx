@@ -53,6 +53,11 @@ import { catchHandler } from "@/utils/catch-handlers";
 import { Mailer } from "@prisma/client";
 import { Spinner } from "./ui/spinner";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 const MailersComponent = ({
   initioalMailers,
@@ -238,7 +243,12 @@ const MailersComponent = ({
       return "טפסי הסכמה";
     }
   };
-  const truncateText = (text: string) => {
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+
+  const toggleExpand = (id: number | null) => {
+    setExpandedId((prevId) => (prevId === id ? null : id));
+  };
+  const truncateText = (id: number, text: string) => {
     const txt = text.replace(/\s+/g, " ").trim();
     if (txt.length <= 50) return txt;
     let truncated = txt.slice(0, 50);
@@ -248,8 +258,35 @@ const MailersComponent = ({
 
     return (
       <div className="flex items-center">
-        {truncated}
-        <TooltipProvider>
+        {/* {truncated} */}
+        {expandedId === id ? (
+          <span onClick={() => toggleExpand(null)} className="cursor-pointer">
+            {text}
+          </span>
+        ) : (
+          <Button onClick={() => toggleExpand(id)} variant="link">
+            {truncated}...
+          </Button>
+        )}
+        {/* {expandedId === id ? text : `${truncated}...`}
+        <Button onClick={() => toggleExpand(id)}>
+          {expandedId === id ? "Show less" : "Show more"}
+        </Button> */}
+        {/* <HoverCard>
+          <HoverCardTrigger asChild>
+            <pre>...</pre>
+          </HoverCardTrigger>
+          <HoverCardContent className="w-80">
+            <div className="flex justify-between space-x-4">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: text,
+                }}
+              />
+            </div>
+          </HoverCardContent>
+        </HoverCard> */}
+        {/* <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <pre>...</pre>
@@ -258,32 +295,35 @@ const MailersComponent = ({
               {text}
             </TooltipContent>
           </Tooltip>
-        </TooltipProvider>
+        </TooltipProvider> */}
       </div>
     );
   };
+
   return (
     <div className="h-[calc(100vh-10rem)] m-4" dir="rtl">
-      <h1 className="text-2xl font-bold mb-6 text-center">ארכיון דוא&quot;ל מערכת מטרות</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">
+        ארכיון דוא&quot;ל מערכת מטרות
+      </h1>
       <div className="flex flex-row gap-4 my-4">
-      <Button
-        onClick={async () => {
-          await fetch("/api/mailer", {
-            method: "POST",
-          });
-        }}
-      >
-        MAILER - הפעלה של
-      </Button>
-      <Button
-        onClick={async () => {
-          await fetch("/api/mailToSend", {
-            method: "POST",
-          });
-        }}
-      >
-        mailToSend - הפעלה של
-      </Button>
+        <Button
+          onClick={async () => {
+            await fetch("/api/mailer", {
+              method: "POST",
+            });
+          }}
+        >
+          הפעלה של - Mailer
+        </Button>
+        <Button
+          onClick={async () => {
+            await fetch("/api/mailToSend", {
+              method: "POST",
+            });
+          }}
+        >
+          הפעלה של - mailToSend
+        </Button>
         <Select
           onValueChange={(value: string) => handleSearch("appType", value)}
           value={appType}
@@ -362,12 +402,20 @@ const MailersComponent = ({
               <TableHead className="font-bold text-right">גוּף</TableHead>
               <TableHead className="font-bold text-right">נִמְעָן</TableHead>
               <TableHead className="font-bold text-right">עֹתֶק</TableHead>
-              <TableHead className="font-bold text-right">עֹתֶק מֻסְתָּר</TableHead>
+              <TableHead className="font-bold text-right">
+                עֹתֶק מֻסְתָּר
+              </TableHead>
               <TableHead className="font-bold text-right"></TableHead>
               <TableHead className="font-bold text-right">סטָטוּס</TableHead>
-              <TableHead className="font-bold text-right">תַּאַרִּיךְ שְׁלִיחָה מְתַכְנֶּן</TableHead>
-              <TableHead className="font-bold text-right">תַּאַרִּיךְ שְׁלִיחָה</TableHead>
-              <TableHead className="font-bold text-right">אֲפְלִיקַצְיָה</TableHead>
+              <TableHead className="font-bold text-right">
+                תַּאַרִּיךְ שְׁלִיחָה מְתַכְנֶּן
+              </TableHead>
+              <TableHead className="font-bold text-right">
+                תַּאַרִּיךְ שְׁלִיחָה
+              </TableHead>
+              <TableHead className="font-bold text-right">
+                אֲפְלִיקַצְיָה
+              </TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>
@@ -376,7 +424,10 @@ const MailersComponent = ({
               <TableRow key={mailer.id}>
                 <TableCell>{mailer.subject}</TableCell>
                 <TableCell>
-                  {truncateText(mailer.body.replace(/<\/?[^>]+(>|$)/g, ""))}
+                  {truncateText(
+                    mailer.id,
+                    mailer.body.replace(/<\/?[^>]+(>|$)/g, "")
+                  )}
                 </TableCell>
                 <TableCell>
                   <pre>{formatEmails(mailer.to)}</pre>

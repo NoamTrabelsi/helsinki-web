@@ -2,7 +2,6 @@ export function createEmailBody(mail_content: string) {
   return `<!DOCTYPE html>
 <html>
 <head>
-    <!-- <meta http-equiv="Content-Type" content="text/html; charset=windows-1255"> -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body style="font-family: Arial;">

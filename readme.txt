@@ -17,6 +17,8 @@ npx shadcn@latest add input
 npx shadcn@latest add alert-dialog
 npx shadcn@latest add alert
 npx shadcn@latest add scroll-area
+npx shadcn@latest add hover-card
+
 
 
 npm install use-debounce

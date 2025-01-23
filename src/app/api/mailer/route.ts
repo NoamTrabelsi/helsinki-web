@@ -68,14 +68,14 @@ export async function POST() {
             `Attachment ID ${invalidMessages} has no filename`;
         }
       }
-      try {
+      try {        
         await transporter.sendMail({
           from: process.env.NEXT_PUBLIC_EMAIL_TO,
           to: toArray,
           cc: ccArray || undefined,
           bcc: bccArray || undefined,
           subject: subject || "No Subject",
-          attachments: validAttachment || undefined,
+          attachments: validAttachment ? validAttachment : undefined,
           html: body,
         });
         try {
