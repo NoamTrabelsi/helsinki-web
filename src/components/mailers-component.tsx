@@ -53,11 +53,11 @@ import { catchHandler } from "@/utils/catch-handlers";
 import { Mailer } from "@prisma/client";
 import { Spinner } from "./ui/spinner";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+// import {
+//   HoverCard,
+//   HoverCardContent,
+//   HoverCardTrigger,
+// } from "@/components/ui/hover-card";
 
 const MailersComponent = ({
   initioalMailers,
