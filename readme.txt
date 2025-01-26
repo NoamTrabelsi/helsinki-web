@@ -31,5 +31,5 @@ npm install --save-dev @types/node-schedule
 
 npm i react-intersection-observer
 
-node prisma/script/import-mailer.js
+node prisma/script/import-mailers.js
 

@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { getAttachments, validEmails } from "./attachment";
 import { sleep } from "@/utils/sleep";
+
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT),

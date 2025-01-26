@@ -53,11 +53,11 @@ import { catchHandler } from "@/utils/catch-handlers";
 import { Mailer } from "@prisma/client";
 import { Spinner } from "./ui/spinner";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-// import {
-//   HoverCard,
-//   HoverCardContent,
-//   HoverCardTrigger,
-// } from "@/components/ui/hover-card";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 const MailersComponent = ({
   initioalMailers,
@@ -123,19 +123,20 @@ const MailersComponent = ({
   }, [inView]);
 
   const loadMoreRows = async () => {
-    const newRows = (await getMailers({
+    const newRows = await getMailers({
       lastId,
       to: to != "" ? to : undefined,
       appType: appType != "" ? appType : undefined,
       status: status != "" ? +status : undefined,
       subject: subject != "" ? subject : undefined,
       body: body != "" ? body : undefined,
-    })) as Mailer[];
+    });
+    const newObj = newRows?.data as Mailer[];
 
-    if (!newRows || !newRows.length) {
+    if (!newObj || !newObj.length) {
       setSkip(true);
     } else {
-      setMailers((prevState: Mailer[]) => [...prevState, ...newRows]);
+      setMailers((prevState: Mailer[]) => [...prevState, ...newObj]);
     }
   };
   const handleSearch = useDebouncedCallback((param: string, value: string) => {
@@ -243,62 +244,63 @@ const MailersComponent = ({
       return "טפסי הסכמה";
     }
   };
-  const [expandedId, setExpandedId] = useState<number | null>(null);
+  // const [expandedId, setExpandedId] = useState<number | null>(null);
 
-  const toggleExpand = (id: number | null) => {
-    setExpandedId((prevId) => (prevId === id ? null : id));
-  };
-  const truncateText = (id: number, text: string) => {
-    const txt = text.replace(/\s+/g, " ").trim();
-    if (txt.length <= 50) return txt;
-    let truncated = txt.slice(0, 50);
-    if (txt[50] !== " " && truncated.lastIndexOf(" ") !== -1) {
-      truncated = truncated.slice(0, truncated.lastIndexOf(" "));
-    }
+  // const toggleExpand = (id: number | null) => {
+  //   setExpandedId((prevId) => (prevId === id ? null : id));
+  // };
+  // const truncateText = (id: number, text: string) => {
+  //   const txt = text.replace(/\s+/g, " ").trim();
+  //   if (txt.length <= 50) return txt;
+  //   let truncated = txt.slice(0, 50);
+  //   if (txt[50] !== " " && truncated.lastIndexOf(" ") !== -1) {
+  //     truncated = truncated.slice(0, truncated.lastIndexOf(" "));
+  //   }
 
-    return (
-      <div className="flex items-center">
-        {/* {truncated} */}
-        {expandedId === id ? (
-          <span onClick={() => toggleExpand(null)} className="cursor-pointer">
-            {text}
-          </span>
-        ) : (
-          <Button onClick={() => toggleExpand(id)} variant="link">
-            {truncated}...
-          </Button>
-        )}
-        {/* {expandedId === id ? text : `${truncated}...`}
-        <Button onClick={() => toggleExpand(id)}>
-          {expandedId === id ? "Show less" : "Show more"}
-        </Button> */}
-        {/* <HoverCard>
-          <HoverCardTrigger asChild>
-            <pre>...</pre>
-          </HoverCardTrigger>
-          <HoverCardContent className="w-80">
-            <div className="flex justify-between space-x-4">
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: text,
-                }}
-              />
-            </div>
-          </HoverCardContent>
-        </HoverCard> */}
-        {/* <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <pre>...</pre>
-            </TooltipTrigger>
-            <TooltipContent className="max-w-[200px] break-words">
-              {text}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider> */}
-      </div>
-    );
-  };
+  //   return (
+  //     <div className="flex items-center">
+  //       {truncated}
+  //       {/* {expandedId === id ? (
+  //         <span onClick={() => toggleExpand(null)} className="cursor-pointer">
+  //           {text}
+  //         </span>
+  //       ) : (
+  //         <Button onClick={() => toggleExpand(id)} variant="ghost">
+  //           {truncated}...
+  //         </Button>
+  //       )} */}
+
+  //       {/* {expandedId === id ? text : `${truncated}...`}
+  //       <Button onClick={() => toggleExpand(id)}>
+  //         {expandedId === id ? "Show less" : "Show more"}
+  //       </Button> */}
+  //       <HoverCard>
+  //         <HoverCardTrigger asChild>
+  //           <pre>...</pre>
+  //         </HoverCardTrigger>
+  //         <HoverCardContent className="w-80">
+  //           <div className="flex justify-between space-x-4">
+  //             <div
+  //               dangerouslySetInnerHTML={{
+  //                 __html: text,
+  //               }}
+  //             />
+  //           </div>
+  //         </HoverCardContent>
+  //       </HoverCard>
+  //       {/* <TooltipProvider>
+  //         <Tooltip>
+  //           <TooltipTrigger asChild>
+  //             <pre>...</pre>
+  //           </TooltipTrigger>
+  //           <TooltipContent className="max-w-[200px] break-words">
+  //             {text}
+  //           </TooltipContent>
+  //         </Tooltip>
+  //       </TooltipProvider> */}
+  //     </div>
+  //   );
+  // };
 
   return (
     <div className="h-[calc(100vh-10rem)] m-4" dir="rtl">
@@ -422,12 +424,24 @@ const MailersComponent = ({
           <TableBody>
             {mailers.map((mailer) => (
               <TableRow key={mailer.id}>
+                <TableCell>{mailer.id}</TableCell>
+
                 <TableCell>{mailer.subject}</TableCell>
                 <TableCell>
-                  {truncateText(
+                  {/* {truncateText(
                     mailer.id,
                     mailer.body.replace(/<\/?[^>]+(>|$)/g, "")
-                  )}
+                  )} */}
+                  <HoverCard>
+                    <HoverCardTrigger asChild className="w-80">
+                      <div className="truncate">
+                        {mailer.body.replace(/<\/?[^>]+(>|$)/g, "")}
+                      </div>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-80">
+                      {mailer.body.replace(/<\/?[^>]+(>|$)/g, "")}
+                    </HoverCardContent>
+                  </HoverCard>
                 </TableCell>
                 <TableCell>
                   <pre>{formatEmails(mailer.to)}</pre>
