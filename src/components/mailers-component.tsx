@@ -64,6 +64,7 @@ const MailersComponent = ({
 }: {
   initioalMailers: Mailer[];
 }) => {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const [status, setStatus] = useState<string>("");
   const [appType, setAppType] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -310,7 +311,7 @@ const MailersComponent = ({
       <div className="flex flex-row gap-4 my-4">
         <Button
           onClick={async () => {
-            await fetch("/api/mailer", {
+            await fetch(`${baseUrl}/api/mailer`, {
               method: "POST",
             });
           }}
@@ -319,7 +320,7 @@ const MailersComponent = ({
         </Button>
         <Button
           onClick={async () => {
-            await fetch("/api/mailToSend", {
+            await fetch(`${baseUrl}/api/mailToSend`, {
               method: "POST",
             });
           }}
@@ -495,7 +496,7 @@ const MailersComponent = ({
                                     status: 1,
                                     sentDate: new Date(),
                                   });
-                                  const data = await fetch("/api/mailer", {
+                                  const data = await fetch(`${baseUrl}/api/mailer`, {
                                     method: "POST",
                                   });
                                   await data.json();

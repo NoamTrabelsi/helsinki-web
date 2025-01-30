@@ -34,3 +34,102 @@
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    80    0    65  100    15   1843    425 --:--:-- --:--:-- --:--:--  2285{"success":"success","message":"Webhooks triggered successfully"}
 2025-01-20 12:44:21 - POST request to http://localhost:3000/api/scheduler was successful.
 2025-01-20 12:44:21 - Keeping the Next.js app running. Press Ctrl+C to stop.
+2025-01-29 08:46:15 - Starting Next.js app on port 3000...
+2025-01-29 08:46:15 - Waiting for Next.js app to be ready...
+2025-01-29 08:46:27 - Next.js app is running at http://localhost:3000
+2025-01-29 08:46:27 - Sending POST request to http://localhost:3000/api/scheduler...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    15    0     0  100    15      0     70 --:--:-- --:--:-- --:--:--    70100    80    0    65  100    15     68     15  0:00:01 --:--:--  0:00:01    84{"success":"success","message":"Webhooks triggered successfully"}
+2025-01-29 08:46:29 - POST request to http://localhost:3000/api/scheduler was successful.
+2025-01-29 08:46:29 - Keeping the Next.js app running. Press Ctrl+C to stop.
+2025-01-29 09:07:13 - Starting Next.js app on port 3001...
+2025-01-29 09:07:13 - Waiting for Next.js app to be ready...
+2025-01-29 09:07:17 - Next.js app is running at http://localhost:3001
+2025-01-29 09:07:17 - Sending POST request to http://localhost:3001/api/scheduler...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    36  100    21  100    15   2149   1535 --:--:-- --:--:-- --:--:--  4000Internal Server Error
+2025-01-29 09:07:18 - POST request to http://localhost:3001/api/scheduler was successful.
+2025-01-29 09:07:18 - Keeping the Next.js app running. Press Ctrl+C to stop.
+2025-01-29 09:08:18 - Starting Next.js app on port 3001...
+2025-01-29 09:08:18 - Waiting for Next.js app to be ready...
+2025-01-29 09:08:20 - Next.js app is running at http://localhost:3001
+2025-01-29 09:08:20 - Sending POST request to http://localhost:3001/api/scheduler...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    80    0    65  100    15    900    207 --:--:-- --:--:-- --:--:--  1111{"success":"success","message":"Webhooks triggered successfully"}
+2025-01-29 09:08:20 - POST request to http://localhost:3001/api/scheduler was successful.
+2025-01-29 09:08:20 - Keeping the Next.js app running. Press Ctrl+C to stop.
+2025-01-29 09:26:00 - Starting Next.js app on port 3001...
+2025-01-29 09:26:00 - Waiting for Next.js app to be ready...
+2025-01-29 09:26:05 - Next.js app is running at http://localhost:3001
+2025-01-29 09:26:05 - Sending POST request to http://localhost:3001/api/scheduler...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    80    0    65  100    15   1168    269 --:--:-- --:--:-- --:--:--  1454{"success":"success","message":"Webhooks triggered successfully"}
+2025-01-29 09:26:05 - POST request to http://localhost:3001/api/scheduler was successful.
+2025-01-29 09:26:05 - Keeping the Next.js app running. Press Ctrl+C to stop.
+2025-01-29 09:43:17 - Starting Next.js app on port 3001...
+2025-01-29 09:43:17 - Waiting for Next.js app to be ready...
+2025-01-29 09:43:21 - Next.js app is running at http://localhost:3001
+2025-01-29 09:43:21 - Sending POST request to http://localhost:3001/api/scheduler...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    80    0    65  100    15   1029    237 --:--:-- --:--:-- --:--:--  1269{"success":"success","message":"Webhooks triggered successfully"}
+2025-01-29 09:43:21 - POST request to http://localhost:3001/api/scheduler was successful.
+2025-01-29 09:43:21 - Keeping the Next.js app running. Press Ctrl+C to stop.
+2025-01-29 09:49:26 - Starting Next.js app on port 3001...
+2025-01-29 09:49:27 - Waiting for Next.js app to be ready...
+2025-01-29 09:49:30 - Next.js app is running at http://localhost:3001
+2025-01-29 09:49:31 - Sending POST request to http://localhost:3001/api/scheduler...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    15    0     0  100    15      0    238 --:--:-- --:--:-- --:--:--   238100    80    0    65  100    15   1016    234 --:--:-- --:--:-- --:--:--  1250{"success":"success","message":"Webhooks triggered successfully"}
+2025-01-29 09:49:31 - POST request to http://localhost:3001/api/scheduler was successful.
+2025-01-29 09:49:31 - Keeping the Next.js app running. Press Ctrl+C to stop.
+2025-01-29 09:52:05 - Starting Next.js app on port 3001...
+2025-01-29 09:52:05 - Waiting for Next.js app to be ready...
+2025-01-29 09:52:09 - Next.js app is running at http://localhost:3001
+2025-01-29 09:52:09 - Sending POST request to http://localhost:3001/api/scheduler...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    80    0    65  100    15    770    177 --:--:-- --:--:-- --:--:--   952{"success":"success","message":"Webhooks triggered successfully"}
+2025-01-29 09:52:09 - POST request to http://localhost:3001/api/scheduler was successful.
+2025-01-29 09:52:09 - Keeping the Next.js app running. Press Ctrl+C to stop.
+2025-01-29 13:46:19 - Starting Next.js app on port 3001...
+2025-01-29 13:46:19 - Waiting for Next.js app to be ready...
+2025-01-29 13:46:19 - Next.js app is running at http://localhost:3001
+2025-01-29 13:46:19 - Sending POST request to http://localhost:3001/api/scheduler...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    80    0    65  100    15   1440    332 --:--:-- --:--:-- --:--:--  1777{"success":"success","message":"Webhooks triggered successfully"}
+2025-01-29 13:46:19 - POST request to http://localhost:3001/api/scheduler was successful.
+2025-01-29 13:46:19 - Keeping the Next.js app running. Press Ctrl+C to stop.
+2025-01-29 13:46:41 - Starting Next.js app on port 3001...
+2025-01-29 13:46:41 - Waiting for Next.js app to be ready...
+2025-01-29 13:46:43 - Next.js app is running at http://localhost:3001
+2025-01-29 13:46:43 - Sending POST request to http://localhost:3001/api/scheduler...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    80    0    65  100    15   2207    509 --:--:-- --:--:-- --:--:--  2758{"success":"success","message":"Webhooks triggered successfully"}
+2025-01-29 13:46:43 - POST request to http://localhost:3001/api/scheduler was successful.
+2025-01-29 13:46:43 - Keeping the Next.js app running. Press Ctrl+C to stop.
+2025-01-29 14:41:34 - Starting Next.js app on port 3001...
+2025-01-29 14:41:34 - Waiting for Next.js app to be ready...
+2025-01-29 14:41:38 - Next.js app is running at http://localhost:3001
+2025-01-29 14:41:38 - Sending POST request to http://localhost:3001/api/scheduler...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    80    0    65  100    15   1966    453 --:--:-- --:--:-- --:--:--  2424{"success":"success","message":"Webhooks triggered successfully"}
+2025-01-29 14:41:38 - POST request to http://localhost:3001/api/scheduler was successful.
+2025-01-29 14:41:38 - Keeping the Next.js app running. Press Ctrl+C to stop.
+2025-01-30 08:29:00 - Starting Next.js app on port 3001...
+2025-01-30 08:29:00 - Waiting for Next.js app to be ready...
+2025-01-30 08:29:03 - Next.js app is running at http://localhost:3001
+2025-01-30 08:29:03 - Sending POST request to http://localhost:3001/api/scheduler...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    80    0    65  100    15   2002    462 --:--:-- --:--:-- --:--:--  2500{"success":"success","message":"Webhooks triggered successfully"}
+2025-01-30 08:29:03 - POST request to http://localhost:3001/api/scheduler was successful.
+2025-01-30 08:29:03 - Keeping the Next.js app running. Press Ctrl+C to stop.

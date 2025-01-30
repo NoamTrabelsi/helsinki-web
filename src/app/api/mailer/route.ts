@@ -44,6 +44,8 @@ export async function POST() {
         { status: 500 }
       );
     }
+    console.log("mailer",mailer);
+    
     if (mailer) {
       const { id, to, cc, bcc, subject, body, attachments, appType } = mailer;
       const arrTo = to.split(";").map((email: string) => email.trim());

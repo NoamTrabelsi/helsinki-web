@@ -49,6 +49,8 @@ export async function POST() {
         { status: 500 }
       );
     }
+    console.log("mailToSend",mailToSend);
+
     if (mailToSend) {
       const {
         id,
