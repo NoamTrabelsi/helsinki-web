@@ -64,7 +64,7 @@ const MailersComponent = ({
 }: {
   initioalMailers: Mailer[];
 }) => {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_CLIENT_BASE_URL;
   const [status, setStatus] = useState<string>("");
   const [appType, setAppType] = useState<string>("");
   const [error, setError] = useState<string>("");

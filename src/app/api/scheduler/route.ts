@@ -6,10 +6,11 @@ import schedule from "node-schedule";
 //*/20 * * * * * - 20 שניות
 
 export async function POST() {
+  const baseUrl = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
   schedule.scheduleJob("*/10 * * * *", async () => {
-    console.log(`Sending request to: http://localhost:3001/api/mailer`);
+    console.log(`Sending request to:mailer`);
     try {
-      await fetch("http://localhost:3001/api/mailer", {
+      await fetch(`${baseUrl}/api/mailer`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
@@ -18,9 +19,9 @@ export async function POST() {
     }
   });
   schedule.scheduleJob("*/10 * * * *", async () => {
-    console.log(`Sending request to: http://localhost:3001/api/mailToSend`);
+    console.log(`Sending request to: mailToSend`);
     try {
-      await fetch("http://localhost:3001/api/mailToSend", {
+      await fetch(`${baseUrl}/api/mailToSend`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
