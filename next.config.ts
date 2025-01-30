@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // assetPrefix: '/helsinki-web',
+  assetPrefix: '/helsinki-web',
 	// basePath: '/helsinki-web',
   // async rewrites() {
   //   return [
